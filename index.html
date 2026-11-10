@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Der Zweite Senat – Das Parteiverbot-Lernspiel</title>
+<style>
+:root{
+  --bg:#f4f1ea; --panel:#fdfcf9; --ink:#232a38; --muted:#61697a;
+  --accent:#8a6d1f; --accent-ink:#fdf8ea; --blue:#2b4a73; --blue-soft:#e3ebf5;
+  --ok:#2c7a4b; --ok-soft:#e2f2e8; --no:#b3261e; --no-soft:#fbe9e7;
+  --track:#e4e0d5; --border:#dcd6c8; --shadow:0 2px 10px rgba(40,35,20,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#131722; --panel:#1c2231; --ink:#e9e7df; --muted:#9aa3b5;
+    --accent:#d7b45e; --accent-ink:#1c2231; --blue:#8fb3dd; --blue-soft:#26344a;
+    --ok:#5fc98a; --ok-soft:#1d3a2a; --no:#f28b82; --no-soft:#43241f;
+    --track:#2a3143; --border:#303a50; --shadow:0 2px 12px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Segoe UI",system-ui,-apple-system,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;padding:20px 18px 90px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:500;line-height:1.25}
+h1{font-size:30px}h2{font-size:22px}h3{font-size:17px}
+p{margin:.4em 0}
+.screen{display:none}.screen.active{display:block}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.topbar .brand{font-family:Georgia,serif;font-size:15px;color:var(--muted);letter-spacing:.04em}
+.btn{display:inline-block;border:1px solid var(--border);background:var(--panel);color:var(--ink);border-radius:9px;padding:8px 14px;font-size:15px;cursor:pointer;box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.ghost{box-shadow:none;background:transparent}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.hero{background:var(--panel);border:1px solid var(--border);border-top:5px solid var(--accent);border-radius:14px;padding:26px 24px;text-align:center;box-shadow:var(--shadow);margin-bottom:22px}
+.hero .scales{font-size:34px}
+.hero .sub{color:var(--muted);margin-top:6px}
+.hero .story{max-width:640px;margin:12px auto 0;font-size:15px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+.scard{display:flex;gap:14px;align-items:flex-start;text-align:left;border:1px solid var(--border);background:var(--panel);border-radius:12px;padding:16px;cursor:pointer;box-shadow:var(--shadow);color:var(--ink);font:inherit}
+.scard:hover{border-color:var(--accent);transform:translateY(-1px)}
+.sico{font-size:24px;line-height:1.3;width:38px;height:38px;flex:none;display:inline-flex;align-items:center;justify-content:center;background:var(--blue-soft);color:var(--blue);border-radius:9px}
+.sbody{display:flex;flex-direction:column;gap:4px}
+.stitle{font-weight:600}
+.sdesc{font-size:14px;color:var(--muted)}
+.sstars{font-size:15px;color:var(--muted)}
+.sstars .on{color:var(--accent);letter-spacing:2px}
+ .sstars .off{color:var(--track);letter-spacing:2px}
+ .sstars .none{color:var(--muted)}
+.final-card{margin-top:16px;border:1px solid var(--border);background:var(--blue-soft);border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:var(--shadow)}
+.final-card .ft{font-weight:600}
+.final-card .fn{font-size:14px;color:var(--muted)}
+details.lz{background:var(--panel);border:1px solid var(--border);border-radius:12px;margin-top:10px;box-shadow:var(--shadow)}
+details.lz summary{padding:13px 16px;cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.lz summary::after{content:"▾";color:var(--muted)}
+details.lz[open] summary::after{content:"▴"}
+details.lz .lzbody{padding:0 16px 14px;color:var(--muted);font-size:14.5px}
+.lzbody ul{padding-left:20px}.lzbody li{margin:.35em 0}
+.lzbody strong{color:var(--ink)}
+footer{margin-top:34px;text-align:center;font-size:13px;color:var(--muted)}
+/* Stations (Fragen-Engine) */
+.station-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.station-head h2{flex:1;min-width:200px}
+.progline{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:6px}
+.bar{height:6px;background:var(--track);border-radius:3px;overflow:hidden;margin-bottom:18px}
+.bar>div{height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .35s ease}
+.qcard{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.qtext{font-size:18px;margin-bottom:16px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:block;width:100%;text-align:left;border:1px solid var(--border);background:var(--bg);color:var(--ink);border-radius:10px;padding:12px 14px;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default;opacity:.95}
+.opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.feedback{margin-top:16px;padding:12px 14px;border-radius:10px;font-size:15px;border-left:4px solid var(--ok);background:var(--ok-soft)}
+.feedback.no{border-left-color:var(--no);background:var(--no-soft)}
+.qfoot{margin-top:16px;display:flex;justify-content:flex-end}
+.result{text-align:left}
+.result .score{font-size:22px;font-family:Georgia,serif}
+.result .stars{color:var(--accent);letter-spacing:3px;font-size:22px;margin-left:8px}
+.result .stars .off{color:var(--track)}
+.result-msg{color:var(--muted)}
+.tips{margin-top:14px;background:var(--blue-soft);border-radius:10px;padding:12px 14px;font-size:14.5px}
+.tips ul{padding-left:20px;margin-top:4px}
+.row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+/* Zeitleiste */
+.hint{font-size:14.5px;color:var(--muted);margin-bottom:14px}
+.zeit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media (max-width:640px){.zeit-grid{grid-template-columns:1fr}}
+.zeit-col h3{margin-bottom:10px;color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.06em;font-family:inherit;font-weight:600}
+#zeit-list{list-style:none;counter-reset:none}
+#zeit-list li{border-left:4px solid var(--accent);background:var(--panel);border-radius:0 10px 10px 0;padding:9px 12px;margin-bottom:8px;box-shadow:var(--shadow);font-size:14.5px}
+#zeit-list li b{color:var(--accent);font-variant-numeric:tabular-nums;margin-right:6px}
+.tcard{display:block;width:100%;text-align:left;border:1px solid var(--border);background:var(--panel);color:var(--ink);border-radius:10px;padding:10px 12px;margin-bottom:8px;font:inherit;font-size:14.5px;cursor:pointer;box-shadow:var(--shadow);user-select:none}
+.tcard:hover{border-color:var(--accent)}
+.tcard.shake{animation:shake .35s;border-color:var(--no)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* Zuordnung */
+.ord-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media (max-width:640px){.ord-grid{grid-template-columns:1fr}}
+.mcard{display:block;width:100%;text-align:left;border:1px solid var(--border);background:var(--panel);color:var(--ink);border-radius:10px;padding:10px 12px;margin-bottom:8px;font:inherit;font-size:14.5px;cursor:pointer;box-shadow:var(--shadow)}
+.mcard.sel{border-color:var(--accent);background:var(--blue-soft)}
+.mcard.done{border-color:var(--ok);background:var(--ok-soft);cursor:default;color:var(--muted)}
+.mcard.wrongflash{border-color:var(--no);background:var(--no-soft)}
+.mcard.term{font-weight:600}
+#ord-status,#z-prog{font-size:14.5px;color:var(--muted);margin-top:12px}
+/* Finale */
+table.res{width:100%;border-collapse:collapse;margin-top:12px}
+table.res td{padding:7px 6px;border-bottom:1px solid var(--border);font-size:15px}
+table.res td:last-child{text-align:right;letter-spacing:2px;color:var(--accent)}
+.certwrap{position:relative;margin-top:20px}
+canvas#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cert{position:relative;border:2px solid var(--accent);border-radius:14px;background:var(--panel);padding:26px 22px;text-align:center;box-shadow:var(--shadow)}
+.cert .cert-head{font-family:Georgia,serif;font-size:20px;color:var(--accent);margin-bottom:8px}
+.cert .cert-date{color:var(--muted);font-size:14px;margin-top:10px}
+.missing li{margin-left:20px}
+@media print{.noprint{display:none!important}.certwrap{margin-top:0}.cert{border-width:2px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="brand">Bundesverfassungsgericht · Lernspiel</span>
+    <span>
+      <button type="button" class="btn ghost" id="mute-btn" aria-label="Ton an- oder ausschalten">🔊 Klang an</button>
+      <button type="button" class="btn ghost" id="reset-btn">Fortschritt zurücksetzen</button>
+    </span>
+  </div>
+
+  <!-- ================= STARTSEITE ================= -->
+  <section id="screen-home" class="screen active">
+    <div class="hero">
+      <div class="scales" aria-hidden="true">⚖</div>
+      <h1>Der Zweite Senat</h1>
+      <p class="sub">Das Lernspiel zum Thema <strong>Parteiverbot der AfD</strong> – Schutz der Demokratie oder Eingriff in den politischen Wettbewerb?</p>
+      <p class="story">Neue Mitarbeitende beim Zweiten Senat des Bundesverfassungsgerichts müssen ihre Sachkunde unter Beweis stellen. Spiele alle sechs Stationen und sammle Sterne – erst dann darfst du im großen Senat das „Urteil“ sprechen.</p>
+    </div>
+
+    <div class="grid2" id="station-grid"></div>
+
+    <div class="final-card">
+      <span>
+        <span class="ft">🏛️ Finale: Der Zweite Senat tagt</span><br>
+        <span class="fn" id="final-note"></span>
+      </span>
+      <button type="button" class="btn primary" id="final-btn">Zum Finale</button>
+    </div>
+
+    <details class="lz">
+      <summary>📌 Lernzettel – alles Wichtige auf einen Blick</summary>
+      <div class="lzbody">
+        <details><summary>Grundgesetz &amp; Parteien</summary>
+          <div class="lzbody"><ul>
+            <li><strong>Art. 21 Abs. 1 GG:</strong> Parteien wirken an der politischen Willensbildung mit; ihre Gründung ist frei; ihre innere Ordnung muss demokratischen Grundsätzen entsprechen.</li>
+            <li><strong>Aufgaben der Parteien:</strong> Interessenvertretung, politische Willensbildung, Personalrekrutierung, Regierungsbildung, Opposition.</li>
+            <li><strong>Wehrhafte Demokratie:</strong> Parteiverbot (Art. 21 Abs. 2), Finanzierungsausschluss (Art. 21 Abs. 3), Grundrechtverwirkung (Art. 18), Ewigkeitsklausel (Art. 79 Abs. 3).</li>
+          </ul></div>
+        </details>
+        <details><summary>FDGO &amp; Verbotsvoraussetzungen</summary>
+          <div class="lzbody"><ul>
+            <li><strong>FDGO (BVerfG):</strong> Menschenwürde (Art. 1), Demokratieprinzip (Art. 20), Rechtsstaatsprinzip (Art. 20).</li>
+            <li><strong>Drei Voraussetzungen:</strong> verfassungsfeindliche Zielsetzung + aktiv-kämpferisches, planvolles Vorgehen + Potenzialität (Erfolg kann zumindest möglich sein; keine bevorstehende Machtübernahme nötig).</li>
+            <li>Radikale, umstrittene oder unpopuläre Forderungen allein rechtfertigen <strong>kein</strong> Verbot.</li>
+          </ul></div>
+        </details>
+        <details><summary>Verfahren &amp; Folgen</summary>
+          <div class="lzbody"><ul>
+            <li><strong>Antrag stellen (§ 43 BVerfGG):</strong> nur Bundestag, Bundesrat und Bundesregierung; Landesregierungen nur gegen Landesparteien. Bürger, Parteien und der Bundespräsident können keinen Antrag stellen.</li>
+            <li><strong>Entscheidung:</strong> ausschließlich das BVerfG (Zweiter Senat), mit Zweidrittelmehrheit der Senatsmitglieder.</li>
+            <li><strong>Folgen:</strong> Auflösung, Tätigkeitsverbot, Verbot von Ersatzorganisationen, kein Wahlantritt, Mandatsverlust, mögliche Vermögenseinziehung – Mitglieder behalten ihre politischen Grundrechte.</li>
+          </ul></div>
+        </details>
+        <details><summary>Chronologie</summary>
+          <div class="lzbody"><ul>
+            <li><strong>1918/19–1933:</strong> Weimarer Republik – NSDAP nutzt demokratische Mittel zur Machtübernahme.</li>
+            <li><strong>1948/49:</strong> Grundgesetz – die Verfassungsgeber schaffen die wehrhafte Demokratie.</li>
+            <li><strong>17.8.1956:</strong> KPD-Verbot.</li>
+            <li><strong>2003:</strong> Erstes NPD-Verfahren wegen V-Leuten eingestellt.</li>
+            <li><strong>17.1.2017:</strong> Zweites NPD-Verfahren – verfassungsfeindliche Ziele bejaht, aber keine Potenzialität: kein Verbot.</li>
+            <li><strong>2023:</strong> NPD benennt sich in „Die Heimat“ um.</li>
+            <li><strong>23.1.2024:</strong> Sechsjähriger Ausschluss von der staatlichen Finanzierung.</li>
+            <li><strong>Mai 2025:</strong> BVerwG bestätigt Verdachtsfall-Einstufung der AfD; BfV stuft Bundespartei zunächst als „gesichert rechtsextremistisch“ ein.</li>
+            <li><strong>Feb. 2026:</strong> VG Köln stoppt diese Einstufung im Eilverfahren; Hauptsache offen.</li>
+            <li><strong>Herbst 2026:</strong> Bundespartei = Verdachtsfall; mehrere Landesverbände = gesichert rechtsextremistisch.</li>
+          </ul></div>
+        </details>
+        <details><summary>Operator „beurteilen“</summary>
+          <div class="lzbody"><ul>
+            <li><strong>Vier Schritte:</strong> Einleitung (Frage &amp; Konflikt) → Hauptteil (Argumente für/dagegen erklären) → Abwägung (mit Kriterien wie <strong>Effizienz</strong> und <strong>Legitimität</strong> gewichten) → eigenes Urteil.</li>
+            <li><strong>Typische Fehler:</strong> Meinung ohne Begründung; Argumente nur aufzählen; keine Abwägung; einseitig argumentieren; rechtliche und politische Fragen vermischen; kein abschließendes Urteil.</li>
+            <li><strong>Alternativen zum Verbot:</strong> Finanzierungsausschluss, politische Auseinandersetzung, Politische Bildung, strafrechtliche Maßnahmen.</li>
+          </ul></div>
+        </details>
+      </div>
+    </details>
+
+    <footer id="home-footer">Basiert auf dem Lernblatt „Das Parteiverbot der AfD“ (Stand: Herbst 2026) · Läuft komplett offline im Browser · Fortschritt wird lokal gespeichert</footer>
+  </section>
+
+  <!-- ================= FRAGEN-ENGINE (Quiz / TF / PC / URTEIL) ================= -->
+  <section id="screen-frage" class="screen">
+    <div class="station-head noprint">
+      <button type="button" class="btn" id="f-back">← Startseite</button>
+      <h2 id="f-title">Station</h2>
+    </div>
+    <div class="progline"><span id="f-prog"></span><span id="f-score"></span></div>
+    <div class="bar" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="f-barwrap"><div id="f-bar"></div></div>
+    <div id="f-body"></div>
+  </section>
+
+  <!-- ================= ZEITLEISTE ================= -->
+  <section id="screen-zeit" class="screen">
+    <div class="station-head noprint">
+      <button type="button" class="btn" id="z-back">← Startseite</button>
+      <h2>Station 4 · Die Zeitleiste</h2>
+    </div>
+    <p class="hint">Klicke die Ereignisse in der richtigen Reihenfolge an – beginnend mit dem <strong>ältesten</strong>. Die Jahreszahl wird erst beim Eintragen gezeigt.</p>
+    <div id="z-prog" aria-live="polite"></div>
+    <div id="z-body"></div>
+  </section>
+
+  <!-- ================= ZUORDNUNG ================= -->
+  <section id="screen-ordnen" class="screen">
+    <div class="station-head noprint">
+      <button type="button" class="btn" id="o-back">← Startseite</button>
+      <h2>Station 5 · Aktenzuordnung</h2>
+    </div>
+    <p class="hint">Wähle links einen <strong>Begriff</strong> und rechts die passende <strong>Bedeutung</strong>. Jedes richtige Paar wird grün.</p>
+    <p id="ord-status" aria-live="polite"></p>
+    <div id="o-body"></div>
+  </section>
+
+  <!-- ================= FINALE ================= -->
+  <section id="screen-final" class="screen">
+    <div class="station-head noprint">
+      <button type="button" class="btn" id="x-back">← Startseite</button>
+      <h2>Der Zweite Senat tagt</h2>
+    </div>
+    <div id="x-body"></div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   DATEN – alle Inhalte stammen aus dem Lernblatt
+   ============================================================ */
+var OPTS_PC = ['PRO – spricht für ein Verbotsverfahren','CONTRA – spricht gegen ein Verbotsverfahren'];
+var OPTS_TF = ['Richtig – so steht es im Lernblatt','Falsch – so steht es nicht im Lernblatt'];
+var OPTS_UR = ['Schritt 1 · Einleitung','Schritt 2 · Hauptteil','Schritt 3 · Abwägung','Schritt 4 · Urteil'];
+
+var QUIZ = [
+ {q:'Welcher Artikel des Grundgesetzes regelt das Parteiverbot?',
+  opts:['Art. 8 Abs. 1 GG','Art. 21 Abs. 2 GG','Art. 20 Abs. 2 GG','Art. 79 Abs. 3 GG'],a:1,
+  why:'Art. 21 Abs. 2 GG: Parteien, die darauf ausgehen, die freiheitliche demokratische Grundordnung zu beeinträchtigen oder zu beseitigen, sind verfassungswidrig.'},
+ {q:'Wer entscheidet über ein Parteiverbot?',
+  opts:['Der Deutsche Bundestag','Die Bundesregierung','Das Bundesverfassungsgericht (Zweiter Senat)','Das Bundesverwaltungsgericht'],a:2,
+  why:'Ausschließlich das Bundesverfassungsgericht – zuständig ist der Zweite Senat. So kann die Regierung keine politischen Konkurrenten verbieten.'},
+ {q:'Wer kann auf Bundesebene ein Parteiverbotsverfahren beantragen (§ 43 BVerfGG)?',
+  opts:['Bundestag, Bundesrat und Bundesregierung','Jeder Bürger per Petition','Der Bundespräsident','Die Opposition im Bundestag'],a:0,
+  why:'Nur diese drei Verfassungsorgane sind antragsberechtigt – nicht Bürgerinnen und Bürger, Parteien oder der Bundespräsident.'},
+ {q:'Wie muss der Zweite Senat über ein Parteiverbot entscheiden?',
+  opts:['Mit einfacher Mehrheit','Mit Zweidrittelmehrheit der Senatsmitglieder','Einstimmig','Durch Losentscheid'],a:1,
+  why:'Für ein Parteiverbot ist eine Zweidrittelmehrheit der Mitglieder des Senats erforderlich – das zeigt, wie hoch die Hürde gelegt ist.'},
+ {q:'Welche Anforderung gehört NICHT zu den Voraussetzungen eines Parteiverbots?',
+  opts:['Verfassungsfeindliche Zielsetzung','Aktiv-kämpferisches, planvolles Vorgehen','Potenzialität der Partei','Ein Wahlergebnis über 20 Prozent'],a:3,
+  why:'Wahlerfolge sind kein Tatbestandsmerkmal. Nötig sind: verfassungsfeindliche Ziele, aktiv-kämpferisches Vorgehen und Potenzialität.'},
+ {q:'Was bedeutet „Potenzialität“ im Sinne des Parteiverbots?',
+  opts:['Die Partei hat die Macht bereits übernommen','Konkrete Anhaltspunkte, dass die Partei ihre verfassungsfeindlichen Ziele zumindest möglicherweise erreichen kann','Die Partei ist im Bundestag vertreten','Die Partei wird vom Verfassungsschutz beobachtet'],a:1,
+  why:'Eine unmittelbar bevorstehende Machtübernahme muss nicht nachgewiesen werden – möglich muss der Erfolg nur sein.'},
+ {q:'Welche drei Elemente gehören nach der Rechtsprechung des BVerfG zur freiheitlichen demokratischen Grundordnung (FDGO)?',
+  opts:['Menschenwürde, Demokratieprinzip, Rechtsstaatsprinzip','Gewaltenteilung, Föderalismus, Europäisierung','Meinungsfreiheit, Versammlungsfreiheit, Berufsfreiheit','Mehrparteisystem, Pressefreiheit, Petitionsrecht'],a:0,
+  why:'Menschenwürde (Art. 1 GG), Demokratieprinzip und Rechtsstaatsprinzip (jeweils Art. 20 GG) bilden den Kern der FDGO.'},
+ {q:'Die sogenannte Ewigkeitsklausel des Grundgesetzes findet sich in …',
+  opts:['Art. 1 Abs. 3 GG','Art. 20 Abs. 4 GG','Art. 79 Abs. 3 GG','Art. 18 GG'],a:2,
+  why:'Art. 79 Abs. 3 GG schützt die grundlegenden Verfassungsprinzipien davor, per Verfassungsänderung abgeschafft zu werden.'},
+ {q:'Welche Partei wurde 1956 als erste vom Bundesverfassungsgericht verboten?',
+  opts:['Die NPD','Die KPD','„Die Heimat“','Die AfD'],a:1,
+  why:'Am 17. August 1956 wurde die KPD verboten – das Gericht sah in ihren marxistisch-leninistischen Zielen eine grundlegende Ablehnung der freiheitlichen demokratischen Ordnung.'},
+ {q:'Warum scheiterte das erste NPD-Verbotsverfahren (2001–2003)?',
+  opts:['Die NPD hatte keine verfassungsfeindlichen Ziele','V-Leute des Verfassungsschutzes waren bis in Führungsebenen tätig – das schuf rechtsstaatliche Probleme bei der Beweisführung','Der Antrag war gar nicht begründet','Die NPD hatte sich vorher aufgelöst'],a:1,
+  why:'Ein Verbotsverfahren muss auch die rechtsstaatlichen Anforderungen an ein faires Verfahren erfüllen – daran scheiterte das Verfahren 2003.'},
+ {q:'Wie entschied das Bundesverfassungsgericht 2017 im zweiten NPD-Verbotsverfahren?',
+  opts:['NPD verboten – alle Voraussetzungen erfüllt','NPD nicht verboten – verfassungsfeindliche Ziele bejaht, aber fehlende Potenzialität','Verfahren erneut wegen V-Leuten eingestellt','NPD von der Finanzierung ausgeschlossen'],a:1,
+  why:'Die NPD verfolgte nach Gerichtsansicht verfassungsfeindliche Ziele, hatte aber keine ausreichenden Einflussmöglichkeiten – deshalb kein Verbot.'},
+ {q:'Welche Maßnahme beschloss das BVerfG am 23. Januar 2024 gegen „Die Heimat“?',
+  opts:['Ein Parteiverbot für zehn Jahre','Der Ausschluss von der staatlichen Parteienfinanzierung für sechs Jahre','Der Verlust aller Wahlzulassungen','Die Verwirkung von Grundrechten'],a:1,
+  why:'Der Finanzierungsausschluss nach Art. 21 Abs. 3 GG wirkt unterhalb der Verbots-Schwelle: Die Partei bleibt bestehen, verliert aber staatliches Geld.'},
+ {q:'Wie wird die AfD-Bundespartei laut Lernblatt (Stand Herbst 2026) vom Verfassungsschutz behandelt?',
+  opts:['Als gesichert rechtsextremistisch','Als rechtsextremistischer Verdachtsfall','Als verbotene Partei','Als völlig unauffällig'],a:1,
+  why:'Nach dem Eilbeschluss des VG Köln (Februar 2026) darf die Bundespartei vorläufig nicht als „gesichert rechtsextremistisch“ behandelt werden – mehrere Landesverbände gelten jedoch als gesichert rechtsextremistisch.'},
+ {q:'Wann und mit welchem Schwerpunkt wurde die AfD gegründet?',
+  opts:['2013 – Kritik an der europäischen Wirtschafts- und Währungspolitik','1990 – Fragen der Wiedervereinigung','2015 – ausschließlich Asylpolitik','1949 – Währungsreform'],a:0,
+  why:'Seit der Gründung 2013 rückten später Migration, nationale Identität und innere Sicherheit in den Mittelpunkt.'},
+ {q:'Welche Folge tritt bei einem erfolgreichen Parteiverbot NICHT ein?',
+  opts:['Auflösung der Partei','Verbot von Ersatzorganisationen','Die Mitglieder verlieren ihre politischen Grundrechte','Mögliche Einziehung des Parteivermögens'],a:2,
+  why:'Das Verbot richtet sich gegen die Organisation. Die Mitglieder dürfen weiterhin politische Meinungen vertreten und sich im Rahmen der Gesetze betätigen.'},
+ {q:'Welche Besonderheit gilt beim Ausschluss von der staatlichen Finanzierung (Art. 21 Abs. 3 GG)?',
+  opts:['Die Partei muss zusätzlich aufgelöst werden','Er erfordert keinen Nachweis der Potenzialität','Er kann nur vom Bundestag verfügt werden','Er gilt nur für Kleinparteien'],a:1,
+  why:'Der Finanzierungsausschluss ist weniger streng als das Verbot: Die Partei bleibt bestehen, darf an Wahlen teilnehmen – die Potenzialität muss nicht nachgewiesen werden.'}
+];
+
+var TF_RAW = [
+ {s:'Der Bundespräsident kann ein Parteiverbotsverfahren beantragen.',t:false,
+  why:'Antragsberechtigt sind nur Bundestag, Bundesrat und Bundesregierung – nicht einzelne Personen wie der Bundespräsident.'},
+ {s:'Eine Partei darf nicht allein deshalb verboten werden, weil sie radikale oder unpopuläre Forderungen vertritt.',t:true,
+  why:'Entscheidend ist ein aktiv-kämpferisches, planvolles Vorgehen gegen die freiheitliche demokratische Grundordnung.'},
+ {s:'Die bloße Ablehnung demokratischer Prinzipien genügt bereits für ein Parteiverbot.',t:false,
+  why:'Dazu muss ein planvolles, aktiv-kämpferisches Handeln kommen, das auf die Beeinträchtigung der Ordnung gerichtet ist.'},
+ {s:'Für den Ausschluss von der staatlichen Finanzierung muss die Partei ihre verfassungsfeindlichen Ziele wahrscheinlich durchsetzen können.',t:false,
+  why:'Der Finanzierungsausschluss ist gerade weniger streng: Eine Potenzialität muss hier nicht nachgewiesen werden.'},
+ {s:'Die betroffene Partei erhält im Verbotsverfahren Gelegenheit, sich zu den Vorwürfen zu äußern.',t:true,
+  why:'Das folgt aus den rechtsstaatlichen Anforderungen an ein faires Verfahren.'},
+ {s:'Die KPD wurde am 17. August 1956 verboten.',t:true,
+  why:'Das BVerfG sah in ihren marxistisch-leninistischen Zielen eine grundlegende Ablehnung der freiheitlichen demokratischen Ordnung.'},
+ {s:'Das zweite NPD-Verbotsverfahren endete 2017 mit einem Verbot der Partei.',t:false,
+  why:'Das Gericht bejahte verfassungsfeindliche Ziele, vermisste aber die Potenzialität – verboten wurde die NPD nicht.'},
+ {s:'Die Einstufung als „gesichert rechtsextremistisch“ durch den Verfassungsschutz ist einem Parteiverbot gleichzusetzen.',t:false,
+  why:'Über die Verfassungswidrigkeit einer Partei entscheidet ausschließlich das Bundesverfassungsgericht.'},
+ {s:'Nach einem Parteiverbot verlieren die Mitglieder automatisch ihre politischen Grundrechte.',t:false,
+  why:'Das Verbot richtet sich gegen die Organisation – die Mitglieder behalten ihre politischen Grundrechte.'},
+ {s:'Eine Landesregierung kann gegen jede Partei ein Verbotsverfahren beantragen.',t:false,
+  why:'Landesregierungen können nur gegen Parteien vorgehen, deren Organisation auf das betreffende Bundesland beschränkt ist.'},
+ {s:'Im Februar 2026 untersagte das VG Köln dem Verfassungsschutz vorläufig, die AfD-Bundespartei als „gesichert rechtsextremistisch“ einzustufen.',t:true,
+  why:'Im Eilverfahren konnte keine entsprechende Prägung der Gesamtpartei hinreichend festgestellt werden – das Hauptsacheverfahren steht noch aus.'},
+ {s:'In der Weimarer Republik konnten demokratiefeindliche Parteien an Wahlen teilnehmen und Mandate gewinnen.',t:true,
+  why:'Genau diese Erfahrung führte 1948/49 zur wehrhaften Demokratie des Grundgesetzes.'}
+];
+var TF = TF_RAW.map(function(x){return {q:x.s, opts:OPTS_TF, a:x.t?0:1, why:x.why};});
+
+var PC_RAW = [
+ {q:'Ein Verbot entzieht einer nachweislich verfassungswidrigen Partei die organisierten Strukturen, mit denen sie die demokratische Ordnung bekämpfen will.',s:0,
+  why:'PRO – Schutz der freiheitlichen demokratischen Grundordnung: Die Parteistrukturen können nicht mehr gegen die Demokratie eingesetzt werden.'},
+ {q:'Artikel 21 Absatz 2 GG muss unabhängig von Größe und Beliebtheit einer Partei gleichmäßig angewendet werden.',s:0,
+  why:'PRO – Konsequente Anwendung des Grundgesetzes: Rechtliche Maßstäbe dürfen nicht von politischer Opportunität abhängen.'},
+ {q:'Ein Verbot kann verhindern, dass eine verfassungswidrige Partei über Regierungsbeteiligungen Einfluss auf Gesetze, Behörden und Personalentscheidungen nimmt.',s:0,
+  why:'PRO – Abwehr extremistischer Einflussnahme auf staatliche Institutionen.'},
+ {q:'Ein Verfahren vor dem Bundesverfassungsgericht schafft verbindliche Klarheit, weil es die Vorwürfe nach rechtlichen Maßstäben prüft – nicht per politischer Abstimmung.',s:0,
+  why:'PRO – Klarheit durch eine unabhängige gerichtliche Entscheidung.'},
+ {q:'Die Beweislast ist enorm: Aktiv-kämpferisches Vorgehen und Potenzialität der Gesamtpartei sind schwer nachzuweisen – das Verfahren könnte scheitern.',s:1,
+  why:'CONTRA – Hohe rechtliche Hürden und ein ungewisser Verfahrensausgang.'},
+ {q:'Die Partei könnte das Verfahren nutzen, um sich als Opfer staatlicher Willkür darzustellen und ihre Anhängerschaft zu mobilisieren.',s:1,
+  why:'CONTRA – Mögliche Stärkung der Opferrolle. Beachte: Das ist eine politische Prognose, keine gesicherte Tatsache.'},
+ {q:'Viele Wählerinnen und Wähler könnten den Eindruck gewinnen, ihre Interessen würden nicht mehr vertreten – die Polarisierung könnte zunehmen.',s:1,
+  why:'CONTRA – Gefahr gesellschaftlicher Spaltung. Umgekehrt gilt: Ein Wahlerfolg allein schützt nicht vor einem Verbot, wenn dessen Voraussetzungen erfüllt sind.'},
+ {q:'Ein Verbot beseitigt nicht die Ursachen der politischen Unzufriedenheit – die Einstellungen der Menschen bleiben bestehen.',s:1,
+  why:'CONTRA – Fehlende Lösung gesellschaftlicher Probleme; die inhaltliche Auseinandersetzung bleibt trotzdem nötig.'}
+];
+var PC = PC_RAW.map(function(x){return {q:x.q, opts:OPTS_PC, a:x.s, why:x.why};});
+
+var UR_RAW = [
+ {q:'„Die Frage, ob ein Parteiverbot der AfD sinnvoll ist, wird kontrovers diskutiert.“',step:0,
+  why:'Klassische Einleitung: Sie benennt das Thema und zeigt, warum die Frage strittig ist.'},
+ {q:'„Der Staat schützt die Demokratie – zugleich genießt der freie Parteienwettbewerb nach Art. 21 GG besonderen Schutz. Genau hier liegt der Konflikt.“',step:0,
+  why:'Auch das gehört in die Einleitung: Der zentrale Konflikt wird erklärt.'},
+ {q:'„Für ein Verbotsverfahren spricht insbesondere, dass das Bundesverfassungsgericht die Vorwürfe umfassend und verbindlich prüfen würde.“',step:1,
+  why:'Im Hauptteil werden Argumente dargestellt und erläutert – hier ein Pro-Argument.'},
+ {q:'„Ein wichtiges Gegenargument besteht darin, dass die hohen Voraussetzungen (aktives Vorgehen, Potenzialität) kaum belastbar nachweisbar sind.“',step:1,
+  why:'Ein Contra-Argument des Hauptteils – es muss erklärt, nicht nur behauptet werden.'},
+ {q:'„Unter dem Gesichtspunkt der Legitimität ist zu berücksichtigen, dass über ein Verbot nur ein unabhängiges Gericht entscheidet – nicht die Regierung.“',step:2,
+  why:'In der Abwägung werden Argumente mit Bewertungskriterien – hier Legitimität – gewichtet.'},
+ {q:'„Zwar spricht der Schutz der FDGO für ein Verbot, allerdings wiegt die Gefahr einer gestärkten Opferrolle schwerer, weil …“',step:2,
+  why:'Die typische Abwägungsformel: „Zwar …, allerdings wiegt … schwerer, weil …“.'},
+ {q:'„Insgesamt komme ich zu dem Urteil, dass der Finanzierungsausschluss das mildere, aber geeignetere Mittel wäre.“',step:3,
+  why:'Am Schluss steht das eigene, begründete Urteil – es beantwortet die Eingangsfrage.'},
+ {q:'„Meiner Beurteilung nach überwiegen die Nachteile eines Verbots, da es die gesellschaftlichen Ursachen nicht beseitigt.“',step:3,
+  why:'Auch das ist ein Schlussurteil mit Begründung – ein differenziertes Urteil ist ausdrücklich erlaubt.'}
+];
+var UR = UR_RAW.map(function(x){return {q:x.q, opts:OPTS_UR, a:x.step, why:x.why};});
+var UR_TIPS = [
+ 'Beurteilen = Argumente darstellen, sie mit Kriterien gewichten und ein eigenes Urteil sprechen.',
+ 'Als Bewertungskriterien helfen z. B. Effizienz und Legitimität.',
+ 'Trenne sauber: rechtliche Zulässigkeit ist etwas anderes als politische Zweckmäßigkeit.',
+ 'Typische Fehler: Meinung ohne Begründung, Argumente nur aufzählen, keine Abwägung, kein Urteil am Ende.'
+];
+
+var TL = [
+ {y:'1918/19',t:'Die Weimarer Republik beginnt – die erste parlamentarische Demokratie Deutschlands auf gesamtstaatlicher Ebene.'},
+ {y:'1933',t:'Die NSDAP übernimmt die Macht; demokratische Rechte und Institutionen werden schrittweise beseitigt.'},
+ {y:'1948/49',t:'Die Verfassungsgeber erarbeiten das Grundgesetz und verankern die wehrhafte Demokratie.'},
+ {y:'1956',t:'Das Bundesverfassungsgericht verbietet die KPD (17. August).'},
+ {y:'2003',t:'Das erste NPD-Verbotsverfahren wird wegen der V-Leute-Problematik eingestellt.'},
+ {y:'2017',t:'Zweites NPD-Verfahren: verfassungsfeindliche Ziele bejaht, aber keine Potenzialität – kein Verbot (17. Januar).'},
+ {y:'2023',t:'Die NPD benennt sich in „Die Heimat“ um.'},
+ {y:'2024',t:'„Die Heimat“ wird für sechs Jahre von der staatlichen Finanzierung ausgeschlossen (23. Januar).'},
+ {y:'2025',t:'BVerwG bestätigt die Verdachtsfall-Einstufung der AfD; das BfV stuft die Bundespartei zunächst als gesichert rechtsextremistisch ein (Mai).'},
+ {y:'2026',t:'Das VG Köln stoppt im Eilverfahren die Einstufung der AfD-Bundespartei als „gesichert rechtsextremistisch“ (Februar).'}
+];
+
+var MAP = [
+ {id:'a',term:'Art. 21 Abs. 1 GG',def:'Die Parteien wirken bei der politischen Willensbildung des Volkes mit; ihre Gründung ist frei.'},
+ {id:'b',term:'Art. 21 Abs. 2 GG',def:'Parteien, die die freiheitliche demokratische Grundordnung bekämpfen, sind verfassungswidrig und können verboten werden.'},
+ {id:'c',term:'Art. 21 Abs. 3 GG',def:'Verfassungsfeindliche Parteien können von der staatlichen Finanzierung ausgeschlossen werden.'},
+ {id:'d',term:'Art. 18 GG',def:'Grundrechte können verwirkt werden, wenn sie zum Kampf gegen die FDGO missbraucht werden.'},
+ {id:'e',term:'Art. 79 Abs. 3 GG',def:'Ewigkeitsklausel: Die Grundprinzipien des Grundgesetzes sind vor Verfassungsänderungen geschützt.'},
+ {id:'f',term:'Menschenwürde (FDGO)',def:'Menschen dürfen nicht grundsätzlich in Gruppen mit unterschiedlichem Wert eingeteilt werden.'},
+ {id:'g',term:'Demokratieprinzip (FDGO)',def:'Alle Staatsgewalt geht vom Volk aus; Opposition und offener Parteienwettbewerb müssen möglich bleiben.'},
+ {id:'h',term:'Rechtsstaatsprinzip (FDGO)',def:'Staatliche Gewalt ist an Recht und Gesetz gebunden; unabhängige Gerichte sichern den Rechtsschutz.'}
+];
+
+var STATIONS = [
+ {id:'quiz', ico:'§', title:'Station 1 · Die Beweisaufnahme', desc:'10 Fragen zu Grundgesetz, Verfahren und Rechtsprechung.'},
+ {id:'tf',   ico:'±', title:'Station 2 · Wahr oder Falsch?', desc:'Typische Irrtümer rund um das Verbotsrecht auf dem Prüfstand.'},
+ {id:'pc',   ico:'⚖', title:'Station 3 · Pro & Contra', desc:'Ordne die Argumente der Pro- oder der Contra-Seite zu.'},
+ {id:'zeit', ico:'⏳', title:'Station 4 · Die Zeitleiste', desc:'Zehn Ereignisse von 1918 bis 2026 chronologisch einordnen.'},
+ {id:'ordnen',ico:'⇄', title:'Station 5 · Aktenzuordnung', desc:'Grundgesetz-Artikel und FDGO-Elemente den Bedeutungen verbinden.'},
+ {id:'urteil',ico:'✎', title:'Station 6 · Urteilsberatung', desc:'Sätze den vier Schritten des Operators „beurteilen“ zuordnen.'}
+];
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function $(id){return document.getElementById(id);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+var store={
+ get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+ set:function(k,v){try{localStorage.setItem(k,v);}catch(e){}},
+ del:function(k){try{localStorage.removeItem(k);}catch(e){}}
+};
+function bestStars(sid){var v=store.get('pvs_stars_'+sid);return v===null?null:parseInt(v,10);}
+function saveStars(sid,pct){
+ var st=pct>=90?3:pct>=70?2:pct>=50?1:0;
+ var b=bestStars(sid);
+ if(b===null||st>b)store.set('pvs_stars_'+sid,String(st));
+ return st;
+}
+function starHtml(n){
+ var s='<span class="on">';for(var i=0;i<n;i++)s+='★';s+='</span>';
+ if(n<3){s+='<span class="off">';for(var j=0;j<3-n;j++)s+='★';s+='</span>';}
+ return s;
+}
+/* Klang */
+var muted=store.get('pvs_muted')==='1';
+var AC=null;
+function beep(ok){
+ if(muted)return;
+ try{
+  if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended')AC.resume();
+  var t0=AC.currentTime;
+  function tone(f,start,dur,g){
+   var o=AC.createOscillator(),v=AC.createGain();
+   o.type='sine';o.frequency.value=f;
+   v.gain.setValueAtTime(0,t0+start);
+   v.gain.linearRampToValueAtTime(g,t0+start+0.02);
+   v.gain.exponentialRampToValueAtTime(0.0001,t0+start+dur);
+   o.connect(v);v.connect(AC.destination);
+   o.start(t0+start);o.stop(t0+start+dur+0.05);
+  }
+  if(ok){tone(523.25,0,0.18,0.10);tone(783.99,0.09,0.25,0.10);}
+  else{tone(220,0,0.28,0.12);tone(165,0.12,0.32,0.12);}
+ }catch(e){}
+}
+/*Screens*/
+function show(id){
+ var screens=document.querySelectorAll('.screen');
+ for(var i=0;i<screens.length;i++)screens[i].classList.toggle('active',screens[i].id===id);
+ window.scrollTo(0,0);
+}
+
+/* ============================================================
+   STARTSEITE
+   ============================================================ */
+function totalStars(){
+ var t=0;
+ for(var i=0;i<STATIONS.length;i++){var b=bestStars(STATIONS[i].id);if(b!==null)t+=b;}
+ return t;
+}
+function playedCount(){
+ var n=0;
+ for(var i=0;i<STATIONS.length;i++){if(bestStars(STATIONS[i].id)!==null)n++;}
+ return n;
+}
+function renderHome(){
+ var h='';
+ for(var i=0;i<STATIONS.length;i++){
+  var s=STATIONS[i],b=bestStars(s.id);
+  h+='<button type="button" class="scard" data-id="'+s.id+'">'
+    +'<span class="sico" aria-hidden="true">'+s.ico+'</span>'
+    +'<span class="sbody"><span class="stitle">'+esc(s.title)+'</span>'
+    +'<span class="sdesc">'+esc(s.desc)+'</span>'
+    +'<span class="sstars">'+(b===null?'<span class="none">noch nicht gespielt</span>':starHtml(b)+' · beste Bewertung')+'</span>'
+    +'</span></button>';
+ }
+ var grid=$('station-grid');
+ grid.innerHTML=h;
+ var cards=grid.querySelectorAll('.scard');
+ for(var c=0;c<cards.length;cards[c++].addEventListener('click',function(ev){
+  startStation(ev.currentTarget.getAttribute('data-id'));
+ }));
+ var p=playedCount();
+ $('final-note').textContent = p<STATIONS.length
+   ? ('Gespielt: '+p+' von '+STATIONS.length+' Stationen – erst dann tagt der Senat zur Urteilsfindung.')
+   : ('Alle Stationen gespielt · insgesamt '+totalStars()+' von '+(STATIONS.length*3)+' Sternen.');
+}
+
+/* ============================================================
+   FRAGEN-ENGINE (Stationen 1, 2, 3, 6)
+   ============================================================ */
+var RUN=null;
+function openFrage(cfg){
+ RUN={cfg:cfg,items:cfg.items,i:0,correct:0,answered:false};
+ $('f-title').textContent=cfg.title;
+ show('screen-frage');
+ renderFrage();
+}
+function renderFrage(){
+ var it=RUN.items[RUN.i];
+ $('f-prog').textContent='Frage '+(RUN.i+1)+' von '+RUN.items.length;
+ $('f-score').textContent='Richtig: '+RUN.correct;
+ $('f-bar').style.width=Math.round(RUN.i/RUN.items.length*100)+'%';
+ $('f-barwrap').setAttribute('aria-valuenow',String(Math.round(RUN.i/RUN.items.length*100)));
+ var h='<div class="qcard"><p class="qtext">'+esc(it.q)+'</p><div class="opts">';
+ for(var i=0;i<it.opts.length;i++){
+  h+='<button type="button" class="opt" data-idx="'+i+'">'+esc(it.opts[i])+'</button>';
+ }
+ h+='</div><div id="f-feedback" class="feedback" aria-live="polite" hidden></div></div>';
+ h+='<div class="qfoot"><button type="button" class="btn primary" id="f-next" hidden>Weiter →</button></div>';
+ $('f-body').innerHTML=h;
+ var opts=$('f-body').querySelectorAll('.opt');
+ for(var b=0;b<opts.length;b++)opts[b].addEventListener('click',function(ev){answer(ev.currentTarget);});
+ $('f-next').addEventListener('click',nextFrage);
+ RUN.answered=false;
+}
+function answer(btn){
+ if(RUN.answered)return;
+ RUN.answered=true;
+ var it=RUN.items[RUN.i];
+ var idx=parseInt(btn.getAttribute('data-idx'),10);
+ var opts=$('f-body').querySelectorAll('.opt');
+ for(var i=0;i<opts.length;i++){
+  var b=opts[i],i2=parseInt(b.getAttribute('data-idx'),10);
+  b.disabled=true;
+  if(i2===it.a)b.classList.add('correct');
+  else if(b===btn)b.classList.add('wrong');
+ }
+ var ok=idx===it.a;
+ if(ok)RUN.correct++;
+ beep(ok);
+ var fb=$('f-feedback');
+ fb.hidden=false;
+ fb.className='feedback'+(ok?'':' no');
+ fb.innerHTML='<strong>'+(ok?'Richtig! ':'Leider falsch. ')+'</strong>'+esc(it.why);
+ var nx=$('f-next');
+ nx.hidden=false;
+ nx.textContent=(RUN.i===RUN.items.length-1)?'Ergebnis ansehen':'Weiter →';
+ $('f-score').textContent='Richtig: '+RUN.correct;
+ $('f-bar').style.width=Math.round((RUN.i+1)/RUN.items.length*100)+'%';
+ $('f-barwrap').setAttribute('aria-valuenow',String(Math.round((RUN.i+1)/RUN.items.length*100)));
+}
+function nextFrage(){
+ RUN.i++;
+ if(RUN.i>=RUN.items.length){finishFrage();return;}
+ renderFrage();
+}
+function finishFrage(){
+ var pct=Math.round(RUN.correct/RUN.items.length*100);
+ var st=saveStars(RUN.cfg.sid,pct);
+ $('f-prog').textContent='Abgeschlossen';
+ $('f-score').textContent=RUN.correct+' von '+RUN.items.length+' richtig';
+ $('f-bar').style.width='100%';
+ $('f-body').innerHTML=resultHtml(RUN.cfg.title,RUN.correct+' von '+RUN.items.length+' richtig',pct,st,RUN.cfg.tips,RUN.cfg.sid);
+ bindResult();
+}
+
+function resultHtml(title,scoreLine,pct,st,tips,sid){
+ var msg=pct>=90?'Verfassungsfest! Eine glänzende Sachkundeakte.'
+      :pct>=70?'Solide vorbereitet – der Senat kann Vertrauen fassen.'
+      :pct>=50?'Es gibt noch Lücken – wirf einen Blick auf den Lernzettel.'
+      :'Da besteht noch Beratungsbedarf – lies den Lernzettel und spiele erneut.';
+ var h='<div class="qcard result"><h3>'+esc(title)+' – abgeschlossen</h3>'
+   +'<p class="score">'+esc(scoreLine)
+   +'<span class="stars" aria-label="'+st+' von 3 Sternen">'+starHtml(st)+'</span></p>'
+   +'<p class="result-msg">'+esc(msg)+'</p>';
+ if(pct>=90){
+   var prev=store.get('pvs_best_'+sid);
+   if(prev===null||pct>parseInt(prev,10)){store.set('pvs_best_'+sid,String(pct));h+='<p class="result-msg">🏆 Neue Bestleistung in dieser Station!</p>';}
+ }
+ if(tips&&tips.length){
+  h+='<div class="tips"><strong>Merksätze:</strong><ul>';
+  for(var i=0;i<tips.length;i++)h+='<li>'+esc(tips[i])+'</li>';
+  h+='</ul></div>';
+ }
+ h+='<div class="row"><button type="button" class="btn primary" id="btn-again">Nochmal spielen</button>'
+   +'<button type="button" class="btn" id="btn-home">Zur Startseite</button></div></div>';
+ return h;
+}
+function bindResult(){
+ $('btn-again').addEventListener('click',function(){startStation(RUN?RUN.cfg.sid:lastStationId);});
+ $('btn-home').addEventListener('click',backHome);
+}
+
+/* ============================================================
+   STATION 4 · ZEITLEISTE
+   ============================================================ */
+var TZ=null;
+function openZeit(){
+ TZ={pool:shuffle(TL),idx:0,errors:0};
+ show('screen-zeit');
+ var h='<div class="zeit-grid"><div class="zeit-col"><h3>Deine Zeitleiste</h3><ol id="zeit-list"></ol></div>'
+     +'<div class="zeit-col"><h3>Noch zu ordnen</h3><div id="zeit-pool"></div></div></div>';
+ $('z-body').innerHTML=h;
+ renderZeit();
+}
+function renderZeit(){
+ var pool=$('zeit-pool'),list=$('zeit-list');
+ if(!pool||!list){finishZeit();return;}
+ var h='';
+ for(var i=0;i<TZ.pool.length;i++){
+  h+='<button type="button" class="tcard" data-idx="'+i+'">'+esc(TZ.pool[i].t)+'</button>';
+ }
+ pool.innerHTML=h||'<p class="result-msg">Alle Ereignisse eingeordnet ✓</p>';
+ var btns=pool.querySelectorAll('.tcard');
+ for(var b=0;b<btns.length;btns[b++].addEventListener('click',function(ev){clickZeit(ev.currentTarget);}));
+ $('z-prog').textContent='Eingeordnet: '+TZ.idx+' von '+TL.length+' · Fehler: '+TZ.errors;
+}
+function clickZeit(btn){
+ var idx=parseInt(btn.getAttribute('data-idx'),10);
+ var ev=TZ.pool[idx];
+ if(ev===TL[TZ.idx]){
+  TZ.pool.splice(idx,1);
+  TZ.idx++;
+  var li=document.createElement('li');
+  li.innerHTML='<b>'+esc(ev.y)+'</b>'+esc(ev.t);
+  $('zeit-list').appendChild(li);
+  beep(true);
+  renderZeit();
+  if(TZ.idx>=TL.length){setTimeout(finishZeit,600);return;}
+ }else{
+  TZ.errors++;
+  beep(false);
+  btn.classList.remove('shake');
+  void btn.offsetWidth;
+  btn.classList.add('shake');
+  $('z-prog').textContent='Eingeordnet: '+TZ.idx+' von '+TL.length+' · Fehler: '+TZ.errors+' – ein früheres Ereignis ist noch übrig!';
+ }
+}
+function finishZeit(){
+ var pct=Math.round(TL.length/(TL.length+TZ.errors)*100);
+ var st=saveStars('zeit',pct);
+ $('z-prog').textContent='Fertig!';
+ $('z-body').innerHTML=resultHtml('Die Zeitleiste',(TL.length-TZ.errors)+' von '+TL.length+' Ereignissen sofort richtig eingeordnet',pct,st,[
+  'Merksatz zur Abfolge: Weimar → NS-Diktatur → Grundgesetz → KPD-Verbot → NPD-Verfahren → Finanzierungsausschluss → AfD-Debatte.'
+ ],'zeit');
+ bindResult2('zeit');
+}
+
+/* ============================================================
+   STATION 5 · ZUORDNUNG
+   ============================================================ */
+var MP=null;
+function openOrdnen(){
+ MP={left:shuffle(MAP),right:shuffle(MAP),sel:null,done:0,errors:0};
+ show('screen-ordnen');
+ var h='<div class="ord-grid"><div class="ord-col"><h3 style="margin-bottom:8px;color:var(--muted)">Begriffe</h3><div id="ord-left"></div></div>'
+     +'<div class="ord-col"><h3 style="margin-bottom:8px;color:var(--muted)">Bedeutungen</h3><div id="ord-right"></div></div></div>';
+ $('o-body').innerHTML=h;
+ var lh='',rh='';
+ for(var i=0;i<MP.left.length;i++)lh+='<button type="button" class="mcard term" data-id="'+MP.left[i].id+'">'+esc(MP.left[i].term)+'</button>';
+ for(var j=0;j<MP.right.length;j++)rh+='<button type="button" class="mcard" data-id="'+MP.right[j].id+'">'+esc(MP.right[j].def)+'</button>';
+ $('ord-left').innerHTML=lh;
+ $('ord-right').innerHTML=rh;
+ var els=document.querySelectorAll('.mcard');
+ for(var e=0;e<els.length;els[e++].addEventListener('click',function(ev){clickOrd(ev.currentTarget);}));
+ $('ord-status').textContent='Zugeordnet: 0 von '+MAP.length;
+}
+function clickOrd(card){
+ if(card.classList.contains('done'))return;
+ if(card.classList.contains('term')){
+  var sel=$('ord-left').querySelectorAll('.mcard');
+  for(var i=0;i<sel.length;i++)sel[i].classList.remove('sel');
+  card.classList.add('sel');
+  MP.sel=card.getAttribute('data-id');
+  return;
+ }
+ if(!MP.sel){$('ord-status').textContent='Bitte zuerst links einen Begriff auswählen.';return;}
+ if(MP.sel===card.getAttribute('data-id')){
+  card.classList.add('done');
+  var term=document.querySelector('#ord-left .mcard[data-id="'+MP.sel+'"]');
+  if(term){term.classList.add('done');term.classList.remove('sel');}
+  MP.done++;
+  MP.sel=null;
+  beep(true);
+  $('ord-status').textContent='Zugeordnet: '+MP.done+' von '+MAP.length+' · Fehler: '+MP.errors;
+  if(MP.done>=MAP.length)setTimeout(finishOrdnen,500);
+ }else{
+  MP.errors++;
+  beep(false);
+  card.classList.add('wrongflash');
+  setTimeout(function(){card.classList.remove('wrongflash');},450);
+  $('ord-status').textContent='Zugeordnet: '+MP.done+' von '+MAP.length+' · Fehler: '+MP.errors+' – das passt nicht zusammen.';
+ }
+}
+function finishOrdnen(){
+ var pct=Math.round(MP.done/(MP.done+MP.errors)*100);
+ var st=saveStars('ordnen',pct);
+ var fehlerText=MP.errors===1?'1 Fehlversuch':MP.errors+' Fehlversuche';
+ $('ord-status').textContent='Fertig!';
+ $('o-body').innerHTML=resultHtml('Die Aktenzuordnung','Alle '+MAP.length+' Paare gefunden · '+fehlerText,pct,st,[
+  'Art. 21 Abs. 2 GG = Parteiverbot · Art. 21 Abs. 3 GG = Finanzierungsausschluss · Art. 18 GG = Grundrechtverwirkung · Art. 79 Abs. 3 GG = Ewigkeitsklausel.'
+ ],'ordnen');
+ bindResult2('ordnen');
+}
+
+/* Result-Bindung für Zeit & Ordnen */
+var lastStationId='quiz';
+function bindResult2(sid){
+ $('btn-again').addEventListener('click',function(){startStation(sid);});
+ $('btn-home').addEventListener('click',backHome);
+}
+
+/* ============================================================
+   STATION-START
+   ============================================================ */
+function startStation(id){
+ lastStationId=id;
+ if(id==='zeit'){openZeit();return;}
+ if(id==='ordnen'){openOrdnen();return;}
+ var cfg;
+ if(id==='quiz')cfg={sid:'quiz',title:'Station 1 · Die Beweisaufnahme',items:shuffle(QUIZ).slice(0,10)};
+ else if(id==='tf')cfg={sid:'tf',title:'Station 2 · Wahr oder Falsch?',items:shuffle(TF).slice(0,10)};
+ else if(id==='pc')cfg={sid:'pc',title:'Station 3 · Pro & Contra',items:shuffle(PC)};
+ else cfg={sid:'urteil',title:'Station 6 · Die Urteilsberatung',items:shuffle(UR),tips:UR_TIPS};
+ openFrage(cfg);
+}
+
+/* ============================================================
+   FINALE
+   ============================================================ */
+function openFinal(){
+ show('screen-final');
+ var missing=[];
+ for(var i=0;i<STATIONS.length;i++){
+  if(bestStars(STATIONS[i].id)===null)missing.push(STATIONS[i].title.replace(/^Station \d+ · /,''));
+ }
+ var h='';
+ if(missing.length>0){
+  h+='<div class="qcard"><p>Noch ist die Akte nicht entscheidungsreif. Folgende Stationen musst du zuerst spielen:</p><ul class="missing">';
+  for(var m=0;m<missing.length;m++)h+='<li>'+esc(missing[m])+'</li>';
+  h+='</ul><div class="row"><button type="button" class="btn primary" id="x-go">Zu den offenen Stationen</button></div></div>';
+  $('x-body').innerHTML=h;
+  $('x-go').addEventListener('click',backHome);
+  return;
+ }
+ var total=totalStars(),max=STATIONS.length*3;
+ var pct=Math.round(total/max*100);
+ var note=pct>=90?'1':pct>=75?'2':pct>=60?'3':'4';
+ var tier=pct>=90?'Herausragend – du hast das Rüstzeug für jede Urteilsberatung.'
+       :pct>=70?'Bestanden – du beherrschst den Stoff sicher.'
+       :pct>=50?'Knapp bestanden – frische den Lernzettel auf und spiele erneut.'
+       :'Noch nicht ausreichend – wiederhole die Stationen, dann klappt es.';
+ h+='<div class="qcard"><p>Der Senat hat nach deiner Sachkundeberatung abgestimmt. Das Ergebnis:</p><table class="res"><tbody>';
+ for(var s=0;s<STATIONS.length;s++){
+  h+='<tr><td>'+STATIONS[s].title+'</td><td aria-label="'+bestStars(STATIONS[s].id)+' von 3 Sternen">'+starHtml(bestStars(STATIONS[s].id))+'</td></tr>';
+ }
+ h+='</tbody></table><p style="margin-top:12px"><strong>Gesamt: '+total+' von '+max+' Sternen</strong> · '+esc(tier)+'</p></div>';
+ h+='<div class="certwrap"><canvas id="confetti" aria-hidden="true"></canvas>'
+   +'<div class="cert"><div class="cert-head">⚖ Urkunde des Zweiten Senats ⚖</div>'
+   +'<p>Das Lernspiel <strong>„Das Parteiverbot der AfD“</strong> hast du mit <strong>'+total+' von '+max+' Sternen</strong> abgeschlossen – Gesamtnote <strong>'+note+'</strong>.</p>'
+   +'<p class="cert-date">Karlsruhe, den '+new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'})+'</p></div></div>';
+ h+='<div class="row noprint"><button type="button" class="btn" id="btn-print">Urkunde drucken</button>'
+   +'<button type="button" class="btn" id="btn-home2">Zur Startseite</button></div>';
+ $('x-body').innerHTML=h;
+ $('btn-print').addEventListener('click',function(){window.print();});
+ $('btn-home2').addEventListener('click',backHome);
+ if(pct>=70)confetti();
+}
+
+/* ============================================================
+   KONFETTI
+   ============================================================ */
+function confetti(){
+ var c=$('confetti');
+ if(!c)return;
+ try{if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;}catch(e){}
+ try{
+  var ctx=c.getContext('2d');
+  c.width=c.offsetWidth||600;c.height=c.offsetHeight||260;
+  var cols=['#c9a227','#2b4a73','#2c7a4b','#b3261e','#d7b45e'];
+  var ps=[];
+  for(var i=0;i<130;i++){
+   ps.push({x:Math.random()*c.width,y:-10-Math.random()*c.height,r:2+Math.random()*4,
+            vy:1.5+Math.random()*3,vx:-1+Math.random()*2,rot:Math.random()*3.14,vr:-0.1+Math.random()*0.2,
+            col:cols[i%cols.length]});
+  }
+  var t0=performance.now();
+  function tick(t){
+   var el=t-t0;
+   ctx.clearRect(0,0,c.width,c.height);
+   for(var i=0;i<ps.length;i++){
+    var p=ps[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+    ctx.fillStyle=p.col;ctx.globalAlpha=el>2200?Math.max(0,1-(el-2200)/600):1;
+    ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);ctx.restore();
+   }
+   if(el<2800)requestAnimationFrame(tick);else ctx.clearRect(0,0,c.width,c.height);
+  }
+  requestAnimationFrame(tick);
+ }catch(e){}
+}
+
+/* ============================================================
+   NAVIGATION & BOOT
+   ============================================================ */
+function backHome(){renderHome();show('screen-home');}
+$('f-back').addEventListener('click',backHome);
+$('z-back').addEventListener('click',backHome);
+$('o-back').addEventListener('click',backHome);
+$('x-back').addEventListener('click',backHome);
+$('final-btn').addEventListener('click',openFinal);
+var mb=$('mute-btn');
+mb.textContent=muted?'🔇 Klang aus':'🔊 Klang an';
+mb.addEventListener('click',function(){
+ muted=!muted;store.set('pvs_muted',muted?'1':'0');
+ mb.textContent=muted?'🔇 Klang aus':'🔊 Klang an';
+});
+$('reset-btn').addEventListener('click',function(){
+ if(window.confirm('Spielstand wirklich zurücksetzen? Alle Sterne werden gelöscht.')){
+  for(var i=0;i<STATIONS.length;i++){store.del('pvs_stars_'+STATIONS[i].id);store.del('pvs_best_'+STATIONS[i].id);}
+  renderHome();
+ }
+});
+renderHome();
+})();
+</script>
+</body>
+</html>
