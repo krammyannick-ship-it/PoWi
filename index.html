@@ -84,6 +84,23 @@ footer{margin-top:34px;text-align:center;font-size:13px;color:var(--muted)}
 .result-msg{color:var(--muted)}
 .tips{margin-top:14px;background:var(--blue-soft);border-radius:10px;padding:12px 14px;font-size:14.5px}
 .tips ul{padding-left:20px;margin-top:4px}
+/* Lernfeld & Merkschicht */
+.lb{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.03em;border-radius:999px;padding:2px 10px;vertical-align:2px}
+.lb.kw{color:var(--accent);border:1px solid var(--accent)}
+.lb.cat-pro{background:var(--ok-soft);color:var(--ok)}
+.lb.cat-contra{background:var(--blue-soft);color:var(--blue)}
+.lb.cat-haltlos{background:var(--no-soft);color:var(--no)}
+.lgroup h3{margin:18px 0 10px;font-size:14px;letter-spacing:.06em;text-transform:uppercase;font-family:inherit;font-weight:600;color:var(--muted)}
+.lmerk{border-left:4px solid var(--accent);background:var(--blue-soft);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14.5px;margin-bottom:12px}
+.lmerk b{color:var(--ink)}
+.lcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);margin-bottom:10px}
+.lcard .lq{margin:6px 0}
+.lcard .leb{font-size:14px;color:var(--muted);margin:0}
+.lcard .leb b{color:var(--ink);font-weight:600}
+.revlist{list-style:none;padding-left:0!important}
+.revlist li{padding:7px 0;border-bottom:1px solid var(--border);font-size:14.5px;color:var(--ink)}
+.revlist li b{font-weight:600}
+.rev-eb{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
 .row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
 /* Zeitleiste */
 .hint{font-size:14.5px;color:var(--muted);margin-bottom:14px}
@@ -136,7 +153,7 @@ canvas#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:
       <div class="scales" aria-hidden="true">⚖</div>
       <h1>Der Zweite Senat</h1>
       <p class="sub">Das Lernspiel zum Thema <strong>Parteiverbot der AfD</strong> – Schutz der Demokratie oder Eingriff in den politischen Wettbewerb?</p>
-      <p class="story">Neue Mitarbeitende beim Zweiten Senat des Bundesverfassungsgerichts müssen ihre Sachkunde unter Beweis stellen. Spiele alle sechs Stationen und sammle Sterne – erst dann darfst du im großen Senat das „Urteil“ sprechen.</p>
+      <p class="story">Neue Mitarbeitende beim Zweiten Senat des Bundesverfassungsgerichts müssen ihre Sachkunde unter Beweis stellen. Spiele alle sieben Stationen und sammle Sterne – erst dann darfst du im großen Senat das „Urteil“ sprechen.</p>
     </div>
 
     <div class="grid2" id="station-grid"></div>
@@ -194,6 +211,15 @@ canvas#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:
             <li><strong>Alternativen zum Verbot:</strong> Finanzierungsausschluss, politische Auseinandersetzung, Politische Bildung, strafrechtliche Maßnahmen.</li>
           </ul></div>
         </details>
+        <details><summary>🧠 Argumente merken – Schlagworte &amp; Eselsbrücken</summary>
+          <div class="lzbody"><ul>
+            <li><strong>So merkst du die Richtung:</strong> An jedem Argument hängt ein <strong>Schlagwort</strong>. Pro-Argumente nennen einen <em>Schaden, den ein Verbot verhindert</em>; Contra-Argumente nennen einen <em>Preis oder ein Risiko des Verbots</em>; „haltlos“ nennt eine <em>rechtlich falsche Zuständigkeit</em> (wer verbietet, was, womit).</li>
+            <li><strong>PRO-Merksatz:</strong> Struktur entziehen · Gleiches Recht · Machtzugang sperren · Klarheit schaffen · früh wehren · Behördenbefund.</li>
+            <li><strong>CONTRA-Merksatz:</strong> Beweis schwer · milderes Mittel zuerst · Opferrolle möglich · Wählerstimmen verwaist · Köpfe bleiben · Zeitfalle.</li>
+            <li><strong>HALTLOS-Merksatz:</strong> Nur das Gericht verbietet · Behörden stufen nur ein · Forderungen allein genügen nie · Verbot trifft Organisationen, nie Wähler · V-Leute verderben Beweise · Länder stoppen keine Bundespartei.</li>
+            <li><strong>Als Bild:</strong> Pro baut eine <em>Schutzmauer</em> (Würde, Macht, Klarheit); Contra fragt nach dem <em>Preis der Mauer</em> (Beweis, Spaltung, Zeit); haltlos verwechselt <em>Wer</em> und <em>Wie</em> des Verbots.</li>
+          </ul></div>
+        </details>
       </div>
     </details>
 
@@ -209,6 +235,17 @@ canvas#confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:
     <div class="progline"><span id="f-prog"></span><span id="f-score"></span></div>
     <div class="bar" role="progressbar" aria-label="Fortschritt" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="f-barwrap"><div id="f-bar"></div></div>
     <div id="f-body"></div>
+  </section>
+
+  <!-- ================= LERNFELD (Station 3 & 7) ================= -->
+  <section id="screen-lern" class="screen">
+    <div class="station-head noprint">
+      <button type="button" class="btn" id="l-back">← Startseite</button>
+      <h2 id="l-title">Lernfeld</h2>
+    </div>
+    <p class="hint">Bevor du testest: Lies die Argumente in Ruhe. Jede These trägt ein <strong>Merkschlagwort</strong> und eine <strong>Eselsbrücke</strong> – daran kannst du sie auch im Kopf wiederfinden.</p>
+    <div id="l-body"></div>
+    <div class="row"><button type="button" class="btn primary" id="l-start">Verstanden – zum Test →</button></div>
   </section>
 
   <!-- ================= ZEITLEISTE ================= -->
@@ -336,23 +373,31 @@ var TF = TF_RAW.map(function(x){return {q:x.s, opts:OPTS_TF, a:x.t?0:1, why:x.wh
 
 var PC_RAW = [
  {q:'Ein Verbot entzieht einer nachweislich verfassungswidrigen Partei die organisierten Strukturen, mit denen sie die demokratische Ordnung bekämpfen will.',s:0,
-  why:'PRO – Schutz der freiheitlichen demokratischen Grundordnung: Die Parteistrukturen können nicht mehr gegen die Demokratie eingesetzt werden.'},
+  why:'PRO – Schutz der freiheitlichen demokratischen Grundordnung: Die Parteistrukturen können nicht mehr gegen die Demokratie eingesetzt werden.',
+  kw:'Struktur entziehen',eb:'Ohne Kasse, Listen und Apparat kann niemand organisiert gegen die Demokratie vorgehen.'},
  {q:'Artikel 21 Absatz 2 GG muss unabhängig von Größe und Beliebtheit einer Partei gleichmäßig angewendet werden.',s:0,
-  why:'PRO – Konsequente Anwendung des Grundgesetzes: Rechtliche Maßstäbe dürfen nicht von politischer Opportunität abhängen.'},
+  why:'PRO – Konsequente Anwendung des Grundgesetzes: Rechtliche Maßstäbe dürfen nicht von politischer Opportunität abhängen.',
+  kw:'Gleiches Recht',eb:'Art. 21 GG sortiert nicht nach Beliebtheit oder Wahlerfolg – er gilt für jede Partei.'},
  {q:'Ein Verbot kann verhindern, dass eine verfassungswidrige Partei über Regierungsbeteiligungen Einfluss auf Gesetze, Behörden und Personalentscheidungen nimmt.',s:0,
-  why:'PRO – Abwehr extremistischer Einflussnahme auf staatliche Institutionen.'},
+  why:'PRO – Abwehr extremistischer Einflussnahme auf staatliche Institutionen.',
+  kw:'Machtzugang',eb:'Wer mitregiert, erhält Schlüssel zu Behörden, Gesetzen und Personal – diese Tür besser früh schließen.'},
  {q:'Ein Verfahren vor dem Bundesverfassungsgericht schafft verbindliche Klarheit, weil es die Vorwürfe nach rechtlichen Maßstäben prüft – nicht per politischer Abstimmung.',s:0,
-  why:'PRO – Klarheit durch eine unabhängige gerichtliche Entscheidung.'},
+  why:'PRO – Klarheit durch eine unabhängige gerichtliche Entscheidung.',
+  kw:'Klarheit',eb:'Ein Gerichtsurteil zieht einen rechtsverbindlichen Schlussstrich – statt eines Verdachts auf Dauer.'},
  {q:'Die Beweislast ist enorm: Aktiv-kämpferisches Vorgehen und Potenzialität der Gesamtpartei sind schwer nachzuweisen – das Verfahren könnte scheitern.',s:1,
-  why:'CONTRA – Hohe rechtliche Hürden und ein ungewisser Verfahrensausgang.'},
+  why:'CONTRA – Hohe rechtliche Hürden und ein ungewisser Verfahrensausgang.',
+  kw:'Beweislast',eb:'Die drei Hürden (Ziele, Kämpfen, Potenzialität) müssen der Gesamtpartei nachgewiesen werden – nicht einzelnen Ausreißern.'},
  {q:'Die Partei könnte das Verfahren nutzen, um sich als Opfer staatlicher Willkür darzustellen und ihre Anhängerschaft zu mobilisieren.',s:1,
-  why:'CONTRA – Mögliche Stärkung der Opferrolle. Beachte: Das ist eine politische Prognose, keine gesicherte Tatsache.'},
+  why:'CONTRA – Mögliche Stärkung der Opferrolle. Beachte: Das ist eine politische Prognose, keine gesicherte Tatsache.',
+  kw:'Opferrolle',eb:'Ein Verfahren als „Angriff von oben“ verkauft – aus der Wunde wird eine Fahne.'},
  {q:'Viele Wählerinnen und Wähler könnten den Eindruck gewinnen, ihre Interessen würden nicht mehr vertreten – die Polarisierung könnte zunehmen.',s:1,
-  why:'CONTRA – Gefahr gesellschaftlicher Spaltung. Umgekehrt gilt: Ein Wahlerfolg allein schützt nicht vor einem Verbot, wenn dessen Voraussetzungen erfüllt sind.'},
+  why:'CONTRA – Gefahr gesellschaftlicher Spaltung. Umgekehrt gilt: Ein Wahlerfolg allein schützt nicht vor einem Verbot, wenn dessen Voraussetzungen erfüllt sind.',
+  kw:'Spaltung',eb:'Verbotene Partei, verwaiste Wähler: Der Frust sucht sich schnell ein neues Gefäß.'},
  {q:'Ein Verbot beseitigt nicht die Ursachen der politischen Unzufriedenheit – die Einstellungen der Menschen bleiben bestehen.',s:1,
-  why:'CONTRA – Fehlende Lösung gesellschaftlicher Probleme; die inhaltliche Auseinandersetzung bleibt trotzdem nötig.'}
+  why:'CONTRA – Fehlende Lösung gesellschaftlicher Probleme; die inhaltliche Auseinandersetzung bleibt trotzdem nötig.',
+  kw:'Ursachen bleiben',eb:'Ein Parteiverbot löscht keine Köpfe – die Unzufriedenheit zieht nur in neue Gruppen um.'}
 ];
-var PC = PC_RAW.map(function(x){return {q:x.q, opts:OPTS_PC, a:x.s, why:x.why};});
+var PC = PC_RAW.map(function(x){return {q:x.q, opts:OPTS_PC, a:x.s, why:x.why, kw:x.kw, eb:x.eb, cat:x.s===0?'PRO':'CONTRA'};});
 
 var UR_RAW = [
  {q:'„Die Frage, ob ein Parteiverbot der AfD sinnvoll ist, wird kontrovers diskutiert.“',step:0,
@@ -379,6 +424,65 @@ var UR_TIPS = [
  'Trenne sauber: rechtliche Zulässigkeit ist etwas anderes als politische Zweckmäßigkeit.',
  'Typische Fehler: Meinung ohne Begründung, Argumente nur aufzählen, keine Abwägung, kein Urteil am Ende.'
 ];
+
+var OPTS_CH = ['PRO – spricht für ein Verbotsverfahren','CONTRA – spricht gegen ein Verbotsverfahren','Haltlos – so geht Parteiverbot rechtlich nicht'];
+var CHECK_RAW = [
+ {q:'Führende Köpfe der Partei sprechen Teilen der Bevölkerung die Gleichwertigkeit ab – das berührt den Kern der Menschenwürde.',s:0,
+  why:'PRO – Schutz der Menschenwürde: Ein ethnisch geprägtes Volksverständnis könnte die FDGO berühren und ist ein zentraler Prüfpunkt.',
+  kw:'Menschenwürde',eb:'Wer Menschen nach Herkunft abstuft, rüttelt am Fundament der FDGO: der Menschenwürde (Art. 1).'},
+ {q:'Über Regierungsbeteiligungen im Land könnte die Partei unmittelbar auf Behörden, Gesetze und Personalentscheidungen zugreifen.',s:0,
+  why:'PRO – Abwehr staatlicher Einflussnahme: Diese Möglichkeit wächst mit Wahlerfolgen – Befürworter sehen darin ein Frühwarnsignal.',
+  kw:'Machtzugang',eb:'Mit jedem Wahlerfolg wachsen die Schlüssel zu Behörden, Gesetzen und Personal.'},
+ {q:'Die wehrhafte Demokratie erlaubt es, früh zu handeln – der Staat darf abwehren, bevor die Demokratie abgeschafft ist.',s:0,
+  why:'PRO – Wehrhafte Demokratie: Art. 21 Abs. 2 GG ist bewusst als vorbeugender Schutzmechanismus gedacht.',
+  kw:'Frühwehr',eb:'Die wehrhafte Demokratie ist ein Rauchmelder: Sie soll alarmieren, bevor das Haus abbrennt.'},
+ {q:'Ein Verfahren beim Bundesverfassungsgericht würde die Vorwürfe verbindlich und rechtsstaatlich klären – statt eines bloßen politischen Verdachts.',s:0,
+  why:'PRO – Klarheitsfunktion: Das Gericht prüft nach festen Maßstäben; sein Urteil binds alle Verfassungsorgane.',
+  kw:'Klarheit',eb:'Das Gerichtsurteil klärt verbindlich für alle Verfassungsorgane – Schluss mit dem Dauer-Verdacht.'},
+ {q:'Ein gelungenes Verbot würde der Partei Organisationen, Kassen und Ersatzstrukturen entziehen.',s:0,
+  why:'PRO – Schwächung extremistischer Strukturen: Organisierte Mobilisierung, Finanzierung und Mandate entfielen.',
+  kw:'Austrocknen',eb:'Ein Verbot dreht der Organisation den Hahn ab: Geld, Kader, Mandate, Ersatzstrukturen.'},
+ {q:'Mehrere Landesverbände werden von Verfassungsschutzbehörden als gesichert rechtsextremistisch eingestuft – Befürworter sehen darin einen Beleg für die Prägung der Gesamtorganisation.',s:0,
+  why:'PRO – Derartige Einstufungen liefern Anhaltspunkte für die Bewertung; entschieden wird sie aber allein vom Bundesverfassungsgericht.',
+  kw:'Behördenbefund',eb:'Der Verfassungsschutz misst das Fieber – die Diagnose stellt allein das Gericht.'},
+ {q:'Dass die Gesamtpartei aktiv-kämpferisch und planvoll gegen die FDGO vorgeht, ist kaum belastbar nachweisbar.',s:1,
+  why:'CONTRA – Beweisproblem: Die hohen Anforderungen müssen für die Gesamtpartei belegt werden, nicht für einzelne Mitglieder.',
+  kw:'Beweislast',eb:'Die hohen Hürden müssen der Gesamtpartei nachgewiesen werden – einzelne Ausfälle reichen nie.'},
+ {q:'Es gibt mildere Mittel: Finanzierungsausschluss, Beobachtung durch den Verfassungsschutz, Strafverfolgung von Einzeltätern.',s:1,
+  why:'CONTRA – Verhältnismäßigkeit: Art. 21 Abs. 3 GG und andere Instrumente könnten schon ausreichen.',
+  kw:'Mildere Mittel',eb:'Erst Pflaster, dann OP: Finanzierungsausschluss, Beobachtung und Strafverfolgung gehen dem Verbot voraus.'},
+ {q:'Die Partei könnte das Verfahren als „Angriff von oben“ nutzen und ihre Anhängerschaft zusätzlich mobilisieren.',s:1,
+  why:'CONTRA – Opferrollen-Effekt: Ein Mobilisierungsgewinn wird häufig befürchtet – ob er eintritt, ist aber eine Prognose.',
+  kw:'Opferrolle',eb:'Märtyrer-Boost möglich – aber die Mobilisierung bleibt eine Prognose, keine Tatsache.'},
+ {q:'Millionen Wählerinnen und Wähler verlören mit der Partei ihre politische Interessenvertretung.',s:1,
+  why:'CONTRA – Eingriff in den Parteienwettbewerb: Die Willensbildung großer Bevölkerungsteile würde berührt. Umgekehrt gilt: Wahlerfolg allein schützt nicht vor einem Verbot.',
+  kw:'Wählerstimmen',eb:'Millionen Wählenden fiele ihre Interessenvertretung weg – eine Lücke, die andere füllen.'},
+ {q:'Die Einstellungen der Anhängerschaft blieben nach einem Verbot bestehen und zögen in informelle Gruppen um.',s:1,
+  why:'CONTRA – Kein Ursachenmittel: Ein Verbot trifft die Organisation, nicht die Köpfe – diffuse Szenen lassen sich kaum verbieten.',
+  kw:'Köpfe bleiben',eb:'Verboten wird der Verein, nicht die Meinung: Einstellungen wandern in informelle Gruppen.'},
+ {q:'Das Verfahren würde Jahre dauern; die Partei bliebe solange voll politisch handlungsfähig.',s:1,
+  why:'CONTRA – Verfahrensdauer: Bis zum Urteil ändert sich praktisch nichts – und der Prozess bindet öffentliche Aufmerksamkeit.',
+  kw:'Zeitfalle',eb:'Der Prozess tickt – die Partei bleibt bis zum Urteil voll handlungsfähig.'},
+ {q:'Regierung und Bundestagsmehrheit könnten die Partei per Gesetz selbst verbieten.',s:2,
+  why:'Haltlos: Über ein Verbot entscheidet allein das Bundesverfassungsgericht (Zweiter Senat, Zweidrittelmehrheit). Die Verfassungsorgane dürfen nur den Antrag stellen.',
+  kw:'Nur das Gericht',eb:'Die Verfassungsorgane dürfen nur den Antrag stellen – entschieden wird allein beim BVerfG (Zweiter Senat, Zweidrittelmehrheit).'},
+ {q:'Die Einstufung als „gesichert rechtsextremistisch“ durch den Verfassungsschutz belegt die Verfassungswidrigkeit automatisch.',s:2,
+  why:'Haltlos: Die Einstufung ist eine Behördenentscheidung über die Beobachtung – über Art. 21 Abs. 2 GG entscheidet ausschließlich das Gericht.',
+  kw:'Behörde ≠ Gericht',eb:'Die Einstufung betrifft nur die Beobachtung – über Art. 21 Abs. 2 GG entscheidet ausschließlich das Gericht.'},
+ {q:'Radikale und provokante Forderungen im Programm genügen für ein Verbot völlig.',s:2,
+  why:'Haltlos: Radikale Forderungen allein genügen nie – zusätzlich müssen aktiv-kämpferisches, planvolles Vorgehen und Potenzialität nachgewiesen werden.',
+  kw:'Drei-Hürden-Formel',eb:'Forderungen allein reißen keine Hürde: erst Ziele + aktiv-kämpferisches Vorgehen + Potenzialität zusammen genügen.'},
+ {q:'Wer die Partei wählt, stimmt verfassungswidrig und kann seine demokratischen Rechte verlieren.',s:2,
+  why:'Haltlos: Das Verbot richtet sich gegen die Organisation. Grundrechte und politische Betätigung der Mitglieder und Wähler bleiben unberührt.',
+  kw:'Organisation ≠ Köpfe',eb:'Wählen ist keine Verfassungswidrigkeit: Das Verbot trifft die Organisation, die Grundrechte bleiben.'},
+ {q:'In einem Verbotsverfahren darf der Staat ohne Weiteres Berichte seiner V-Leute aus der Parteispitze als Beweismittel vorlegen.',s:2,
+  why:'Haltlos: Genau daran scheiterte das erste NPD-Verfahren 2003 – solange V-Leute in Führungsstrukturen mitwirken, ist eine rechtsstaatlich saubere Beweisführung nicht möglich.',
+  kw:'V-Leute-Falle',eb:'2003 genau daran gescheitert: Mit Spitzeln in den Führungsstrukturen gibt es keine saubere Beweisführung.'},
+ {q:'Ein Bundesland mit starkem Landesverband könnte die Bundespartei per Landesverbot ausschalten.',s:2,
+  why:'Haltlos: Landesregierungen dürfen nur gegen Landesparteien vorgehen – die Bundespartei ist ausschließlich Sache der drei antragsberechtigten Bundesverfassungsorgane.',
+  kw:'Bundessache',eb:'Länder dürfen nur ihre Landespartei verbieten – die Bundespartei gehört vors Bundesverfassungsgericht.'}
+];
+var CHECK = CHECK_RAW.map(function(x){return {q:x.q, opts:OPTS_CH, a:x.s, why:x.why, kw:x.kw, eb:x.eb, cat:['PRO','CONTRA','HALTLOS'][x.s]};});
 
 var TL = [
  {y:'1918/19',t:'Die Weimarer Republik beginnt – die erste parlamentarische Demokratie Deutschlands auf gesamtstaatlicher Ebene.'},
@@ -407,10 +511,11 @@ var MAP = [
 var STATIONS = [
  {id:'quiz', ico:'§', title:'Station 1 · Die Beweisaufnahme', desc:'10 Fragen zu Grundgesetz, Verfahren und Rechtsprechung.'},
  {id:'tf',   ico:'±', title:'Station 2 · Wahr oder Falsch?', desc:'Typische Irrtümer rund um das Verbotsrecht auf dem Prüfstand.'},
- {id:'pc',   ico:'⚖', title:'Station 3 · Pro & Contra', desc:'Ordne die Argumente der Pro- oder der Contra-Seite zu.'},
+ {id:'pc',   ico:'⚖', title:'Station 3 · Pro & Contra', desc:'Erst im Lernfeld die Argumente mit Schlagworten merken, dann zuordnen.'},
  {id:'zeit', ico:'⏳', title:'Station 4 · Die Zeitleiste', desc:'Zehn Ereignisse von 1918 bis 2026 chronologisch einordnen.'},
  {id:'ordnen',ico:'⇄', title:'Station 5 · Aktenzuordnung', desc:'Grundgesetz-Artikel und FDGO-Elemente den Bedeutungen verbinden.'},
- {id:'urteil',ico:'✎', title:'Station 6 · Urteilsberatung', desc:'Sätze den vier Schritten des Operators „beurteilen“ zuordnen.'}
+ {id:'urteil',ico:'✎', title:'Station 6 · Urteilsberatung', desc:'Sätze den vier Schritten des Operators „beurteilen“ zuordnen.'},
+ {id:'check', ico:'🔎', title:'Station 7 · Der Verbots-Check', desc:'Lernfeld mit Eselsbrücken, dann 18 Thesen prüfen: Pro, Contra – oder rechtlich haltlos?'}
 ];
 
 /* ============================================================
@@ -511,6 +616,57 @@ function openFrage(cfg){
  show('screen-frage');
  renderFrage();
 }
+
+/* ============================================================
+   MERKSCHICHT · Lernfeld & Eselsbrücken (Stationen 3 und 7)
+   ============================================================ */
+var LEARN={
+ pc:{cats:[['PRO','PRO – spricht für ein Verbotsverfahren'],['CONTRA','CONTRA – spricht dagegen']],
+  m:{PRO:'Struktur entziehen – Gleiches Recht – Machtzugang sperren – Klarheit schaffen.',
+     CONTRA:'Beweis schwer – Opferrolle möglich – Spaltung droht – Ursachen bleiben.'}},
+ check:{cats:[['PRO','PRO – spricht für ein Verbotsverfahren'],['CONTRA','CONTRA – spricht dagegen'],['HALTLOS','Haltlos – so geht Parteiverbot rechtlich nicht']],
+  m:{PRO:'Würde schützen – Macht fernhalten – früh wehren – Klarheit schaffen – austrocknen – Behördenbefund beachten.',
+     CONTRA:'Beweislast schwer – milderes Mittel zuerst – Opferrolle möglich – Wählerstimmen verwaist – Köpfe bleiben – Zeitfalle.',
+     HALTLOS:'Nur das Gericht verbietet – Behörden stufen nur ein – Forderungen allein genügen nie – Verbot trifft Organisationen, nie Wähler – V-Leute verderben Beweise – Länder stoppen keine Bundespartei.'}}
+};
+var LEARNCFG=null;
+function kwBadge(t){return t?'<span class="lb kw">'+esc(t)+'</span> ':'';}
+function catBadge(c){
+ var cls=c==='PRO'?'cat-pro':c==='CONTRA'?'cat-contra':'cat-haltlos';
+ return '<span class="lb '+cls+'">'+esc(c)+'</span>';
+}
+function openLern(cfg){
+ var L=LEARN[cfg.sid];
+ LEARNCFG=cfg;
+ $('l-title').textContent=cfg.title+' · Lernfeld';
+ var h='';
+ for(var g=0;g<L.cats.length;g++){
+  var cat=L.cats[g][0];
+  h+='<div class="lgroup"><h3>'+esc(L.cats[g][1])+'</h3>'
+    +'<div class="lmerk"><b>Merksatz:</b> '+esc(L.m[cat])+'</div>';
+  var list=cfg.items.filter(function(x){return x.cat===cat;});
+  for(var k=0;k<list.length;k++){
+   h+='<div class="lcard">'+catBadge(cat)+kwBadge(list[k].kw)
+     +'<p class="lq">'+esc(list[k].q)+'</p>'
+     +'<p class="leb">💡 <b>Merken:</b> '+esc(list[k].eb)+'</p></div>';
+  }
+  h+='</div>';
+ }
+ $('l-body').innerHTML=h;
+ show('screen-lern');
+}
+function reviewHtml(sid,items){
+ var L=LEARN[sid],h='<details class="lz"><summary>🔁 Alle Argumente noch einmal – zum Nachlesen und Merken</summary><div class="lzbody"><ul class="revlist">';
+ for(var g=0;g<L.cats.length;g++){
+  var cat=L.cats[g][0];
+  var list=items.filter(function(x){return x.cat===cat;});
+  for(var k=0;k<list.length;k++){
+   h+='<li>'+catBadge(cat)+' <b>'+esc(list[k].kw)+'</b> – '+esc(list[k].q)
+     +'<span class="rev-eb">💡 '+esc(list[k].eb)+'</span></li>';
+  }
+ }
+ return h+'</ul></div></details>';
+}
 function renderFrage(){
  var it=RUN.items[RUN.i];
  $('f-prog').textContent='Frage '+(RUN.i+1)+' von '+RUN.items.length;
@@ -547,7 +703,7 @@ function answer(btn){
  var fb=$('f-feedback');
  fb.hidden=false;
  fb.className='feedback'+(ok?'':' no');
- fb.innerHTML='<strong>'+(ok?'Richtig! ':'Leider falsch. ')+'</strong>'+esc(it.why);
+ fb.innerHTML='<strong>'+(ok?'Richtig! ':'Leider falsch. ')+'</strong>'+kwBadge(it.kw)+esc(it.why);
  var nx=$('f-next');
  nx.hidden=false;
  nx.textContent=(RUN.i===RUN.items.length-1)?'Ergebnis ansehen':'Weiter →';
@@ -566,11 +722,11 @@ function finishFrage(){
  $('f-prog').textContent='Abgeschlossen';
  $('f-score').textContent=RUN.correct+' von '+RUN.items.length+' richtig';
  $('f-bar').style.width='100%';
- $('f-body').innerHTML=resultHtml(RUN.cfg.title,RUN.correct+' von '+RUN.items.length+' richtig',pct,st,RUN.cfg.tips,RUN.cfg.sid);
+ $('f-body').innerHTML=resultHtml(RUN.cfg.title,RUN.correct+' von '+RUN.items.length+' richtig',pct,st,RUN.cfg.tips,RUN.cfg.sid,RUN.items);
  bindResult();
 }
 
-function resultHtml(title,scoreLine,pct,st,tips,sid){
+function resultHtml(title,scoreLine,pct,st,tips,sid,items){
  var msg=pct>=90?'Verfassungsfest! Eine glänzende Sachkundeakte.'
       :pct>=70?'Solide vorbereitet – der Senat kann Vertrauen fassen.'
       :pct>=50?'Es gibt noch Lücken – wirf einen Blick auf den Lernzettel.'
@@ -588,6 +744,7 @@ function resultHtml(title,scoreLine,pct,st,tips,sid){
   for(var i=0;i<tips.length;i++)h+='<li>'+esc(tips[i])+'</li>';
   h+='</ul></div>';
  }
+ if(LEARN[sid]&&items&&items.length)h+=reviewHtml(sid,items);
  h+='<div class="row"><button type="button" class="btn primary" id="btn-again">Nochmal spielen</button>'
    +'<button type="button" class="btn" id="btn-home">Zur Startseite</button></div></div>';
  return h;
@@ -727,8 +884,15 @@ function startStation(id){
  if(id==='quiz')cfg={sid:'quiz',title:'Station 1 · Die Beweisaufnahme',items:shuffle(QUIZ).slice(0,10)};
  else if(id==='tf')cfg={sid:'tf',title:'Station 2 · Wahr oder Falsch?',items:shuffle(TF).slice(0,10)};
  else if(id==='pc')cfg={sid:'pc',title:'Station 3 · Pro & Contra',items:shuffle(PC)};
+ else if(id==='check')cfg={sid:'check',title:'Station 7 · Der Verbots-Check',items:shuffle(CHECK),tips:[
+  'Ein Verbotsargument muss die drei Voraussetzungen treffen: verfassungsfeindliche Ziele, aktiv-kämpferisches Vorgehen, Potenzialität.',
+  'Wer Verfahren und Zuständigkeiten verwechselt (Regierung statt Gericht, Verfassungsschutz statt BVerfG), argumentiert rechtlich haltlos.',
+  'Gute Beurteilungen nennen Argumente UND Kriterien – Effizienz und Legitimität.'
+ ]};
  else cfg={sid:'urteil',title:'Station 6 · Die Urteilsberatung',items:shuffle(UR),tips:UR_TIPS};
- openFrage(cfg);
+ /* Lernfelder-Stationen: beim ersten Spiel erst das Lernfeld zeigen */
+ if(LEARN[cfg.sid]&&bestStars(cfg.sid)===null)openLern(cfg);
+ else openFrage(cfg);
 }
 
 /* ============================================================
@@ -811,6 +975,8 @@ function confetti(){
    ============================================================ */
 function backHome(){renderHome();show('screen-home');}
 $('f-back').addEventListener('click',backHome);
+$('l-back').addEventListener('click',backHome);
+$('l-start').addEventListener('click',function(){openFrage(LEARNCFG);});
 $('z-back').addEventListener('click',backHome);
 $('o-back').addEventListener('click',backHome);
 $('x-back').addEventListener('click',backHome);
